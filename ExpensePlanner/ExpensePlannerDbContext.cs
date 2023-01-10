@@ -1,10 +1,11 @@
 ﻿using ExpensePlanner.Models;
 using Microsoft.EntityFrameworkCore;
 using ExpensePlanner.Models.Dtos;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace ExpensePlanner
 {
-    public class ExpensePlannerDbContext : DbContext
+    public class ExpensePlannerDbContext : IdentityDbContext<User>
     {
         public ExpensePlannerDbContext(DbContextOptions<ExpensePlannerDbContext> options) : base(options)
         {
@@ -18,17 +19,15 @@ namespace ExpensePlanner
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<User>()
                 .HasMany(a => a.Expenses)
                 .WithOne(a => a.User);
 
-            modelBuilder.Entity<Role>()
-                .HasMany(a => a.Users)
-                .WithOne(a => a.Role);
+            modelBuilder.Entity<User>()
+                .HasMany(a => a.Roles)
+                .WithMany(a => a.Users);
         }
-
-        public DbSet<ExpensePlanner.Models.Dtos.ExpenseDto> ExpenseDto { get; set; }
-
-        //public DbSet<ExpensePlanner.Models.Dtos.ExpenseDto> ExpenseDto { get; set; }
     }
 }

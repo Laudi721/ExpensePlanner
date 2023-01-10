@@ -18,7 +18,7 @@ namespace ExpensePlanner.Services
         public IEnumerable<Expense> Get()
         {
             var result = _context.Set<Expense>()
-                .Include(a => a.User)
+                //.Include(a => a.User)
                 .Where(a => !a.IsCompleted && !a.IsDeleted)
                 .ToList();
 
@@ -45,7 +45,7 @@ namespace ExpensePlanner.Services
         public IEnumerable<ExpenseDto> GetCompleted()
         {
             var query = _context.Set<Expense>()
-                .Include(a => a.User)
+                //.Include(a => a.User)
                 .Where(a => a.IsCompleted);
 
             var data = query.Select(a => new
@@ -82,7 +82,7 @@ namespace ExpensePlanner.Services
             model.Amount = dto.Amount;
             model.ExpenseType = dto.ExpenseType;
             model.CreateDate = DateTime.Now;
-            model.UserId = 1;
+            //model.UserId = 17;
         }
 
         public bool MarkAsDone(int id)
