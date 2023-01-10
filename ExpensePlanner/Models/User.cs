@@ -1,24 +1,24 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 
 namespace ExpensePlanner.Models
 {
-    public class User
+    public class User : IdentityUser
     {
-        public User()
-        {
-            Expenses = new List<Expense>();
-        }
+        //public User()
+        //{
+        //    //Expenses = new List<Expense>();
+        //    //Roles = new List<Role>();
+        //}
 
-        public int Id { get; set; }
+        //public int Id { get; set; }
 
-        public string Login { get; set; }
+        //public string Login { get; set; }
 
-        public string PasswordHash { get; set; }
+        //public string PasswordHash { get; set; }
 
-        public virtual List<Expense> Expenses { get; set; }
+        //public virtual List<Expense> Expenses { get; set; }
 
-        public Role Role { get; set; }
-
-        public int RoleId { get; set; }
+        //public virtual List<Role> Roles { get; set; }
     }
 }
