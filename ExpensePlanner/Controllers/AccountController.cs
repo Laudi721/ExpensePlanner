@@ -35,7 +35,6 @@ namespace ExpensePlanner.Controllers
 
             if (!ValidateData(userLoginData) || !await _userManager.CheckPasswordAsync(user, userLoginData.Password))
             {
-
                 ModelState.AddModelError(nameof(userLoginData.UserName), "Incorrect login or password");
                 return View(userLoginData);
             }
@@ -84,18 +83,11 @@ namespace ExpensePlanner.Controllers
         }
 
         public bool CheckExistAccount(Register userRegisterData) => _accountService.CheckExistAccount(userRegisterData);
-        //{
-        //    return _accountService.CheckExistAccount(userRegisterData);
-        //}
 
         public bool ValidateData(Login userLoginData) => _accountService.ValidateData(userLoginData);
         
 
         public User GetUser(Login login) => _accountService.GetUser(login);
-        //{
-        //    var user = _accountService.User(login);
 
-        //    return user;
-        //}
     }
 }

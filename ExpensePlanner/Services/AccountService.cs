@@ -65,13 +65,9 @@ namespace ExpensePlanner.Services
 
         public User GetUser(Login login)
         {
-            //var result = new User();
-
             var result = _context.Set<User>()
                 .FirstOrDefault(a => a.UserName == login.UserName);
-
-            //result = query;
-
+       
             return result;
         }
     }
