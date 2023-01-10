@@ -4,6 +4,7 @@ using ExpensePlanner;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ExpensePlanner.Migrations
 {
     [DbContext(typeof(ExpensePlannerDbContext))]
-    partial class ExpensePlannerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230110110330_AddDeletedPropertiesInExpense")]
+    partial class AddDeletedPropertiesInExpense
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -140,14 +142,24 @@ namespace ExpensePlanner.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("RoleId");
-
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("RoleUser", b =>
+                {
+                    b.Property<int>("RolesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UsersId")
+                        .HasColumnType("int");
+
+                    b.HasKey("RolesId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("RoleUser");
                 });
 
             modelBuilder.Entity("ExpensePlanner.Models.Expense", b =>
@@ -161,20 +173,19 @@ namespace ExpensePlanner.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ExpensePlanner.Models.User", b =>
+            modelBuilder.Entity("RoleUser", b =>
                 {
-                    b.HasOne("ExpensePlanner.Models.Role", "Role")
-                        .WithMany("Users")
-                        .HasForeignKey("RoleId")
+                    b.HasOne("ExpensePlanner.Models.Role", null)
+                        .WithMany()
+                        .HasForeignKey("RolesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Role");
-                });
-
-            modelBuilder.Entity("ExpensePlanner.Models.Role", b =>
-                {
-                    b.Navigation("Users");
+                    b.HasOne("ExpensePlanner.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ExpensePlanner.Models.User", b =>

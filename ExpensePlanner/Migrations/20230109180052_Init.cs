@@ -10,16 +10,19 @@ namespace ExpensePlanner.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "ExpenseTypes",
+                name: "ExpenseDto",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Amount = table.Column<double>(type: "float", nullable: false),
+                    ExpenseType = table.Column<int>(type: "int", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ExpenseTypes", x => x.Id);
+                    table.PrimaryKey("PK_ExpenseDto", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -50,29 +53,20 @@ namespace ExpensePlanner.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Expenses",
+                name: "ExpenseLists",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Amount = table.Column<double>(type: "float", nullable: false),
-                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ExpenseTypeId = table.Column<int>(type: "int", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Expenses", x => x.Id);
+                    table.PrimaryKey("PK_ExpenseLists", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Expenses_ExpenseTypes_ExpenseTypeId",
-                        column: x => x.ExpenseTypeId,
-                        principalTable: "ExpenseTypes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Expenses_Users_UserId",
+                        name: "FK_ExpenseLists_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -103,15 +97,38 @@ namespace ExpensePlanner.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Expenses_ExpenseTypeId",
-                table: "Expenses",
-                column: "ExpenseTypeId");
+            migrationBuilder.CreateTable(
+                name: "Expenses",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Amount = table.Column<double>(type: "float", nullable: false),
+                    ExpenseType = table.Column<int>(type: "int", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    ExpenseListId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Expenses", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Expenses_ExpenseLists_ExpenseListId",
+                        column: x => x.ExpenseListId,
+                        principalTable: "ExpenseLists",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Expenses_UserId",
-                table: "Expenses",
+                name: "IX_ExpenseLists_UserId",
+                table: "ExpenseLists",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Expenses_ExpenseListId",
+                table: "Expenses",
+                column: "ExpenseListId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RoleUser_UsersId",
@@ -122,13 +139,16 @@ namespace ExpensePlanner.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "ExpenseDto");
+
+            migrationBuilder.DropTable(
                 name: "Expenses");
 
             migrationBuilder.DropTable(
                 name: "RoleUser");
 
             migrationBuilder.DropTable(
-                name: "ExpenseTypes");
+                name: "ExpenseLists");
 
             migrationBuilder.DropTable(
                 name: "Roles");

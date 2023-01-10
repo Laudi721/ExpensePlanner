@@ -1,10 +1,11 @@
 ﻿using ExpensePlanner.Models.Enums;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ExpensePlanner.Models
+namespace ExpensePlanner.Models.Dtos
 {
-    public class Expense
+    public class ExpenseDto
     {
         public int Id { get; set; }
 
@@ -12,28 +13,17 @@ namespace ExpensePlanner.Models
 
         public double Amount { get; set; }
 
-        public ExpenseType ExpenseType{ get; set; }
+        public ExpenseType ExpenseType { get; set; }
 
         [MaxLength(50)]
         public string Description { get; set; }
 
         public bool IsCompleted { get; set; }
 
-        [Column(TypeName="datetime2")]
+        [Column(TypeName = "datetime2")]
         public DateTime CreateDate { get; set; }
 
-        [Column(TypeName="datetime2")]
+        [Column(TypeName = "datetime2")]
         public DateTime? RealizedDate { get; set; }
-
-        public User User{ get; set; }
-
-        public int UserId { get; set; }
-
-        public bool IsDeleted { get; set; }
-
-        [Column(TypeName="datetime2")]
-        public DateTime? DeletedTime { get; set; }
-
-
     }
 }

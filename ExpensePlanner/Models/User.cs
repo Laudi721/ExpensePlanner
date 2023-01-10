@@ -7,7 +7,6 @@ namespace ExpensePlanner.Models
         public User()
         {
             Expenses = new List<Expense>();
-            Roles = new List<Role>();
         }
 
         public int Id { get; set; }
@@ -18,6 +17,8 @@ namespace ExpensePlanner.Models
 
         public virtual List<Expense> Expenses { get; set; }
 
-        public virtual List<Role> Roles { get; set; }
+        public Role Role { get; set; }
+
+        public int RoleId { get; set; }
     }
 }
