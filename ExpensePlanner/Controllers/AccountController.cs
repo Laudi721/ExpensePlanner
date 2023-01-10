@@ -64,13 +64,13 @@ namespace ExpensePlanner.Controllers
                 return View(userRegisterData);
             }
 
-            var newUser = new User
-            {
-                UserName = userRegisterData.UserName,
-                Email = userRegisterData.Email
-            };
+            //var newUser = new User
+            //{
+            //    UserName = userRegisterData.UserName,
+            //    Email = userRegisterData.Email
+            //};
 
-            await _userManager.CreateAsync(newUser, userRegisterData.Password);
+            //await _userManager.CreateAsync(newUser, userRegisterData.Password);
 
             return RedirectToAction("Login");
         }

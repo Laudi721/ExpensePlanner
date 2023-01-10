@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ExpensePlanner.Services
 {
-    public class AccountService : IAccountService
+    public class AccountService //: IAccountService
     {
         private readonly ExpensePlannerDbContext _context;
 
@@ -39,36 +39,36 @@ namespace ExpensePlanner.Services
             }
         }
 
-        public bool CheckExistAccount(Register userRegisterData)
-        {
-            var query = _context.Set<User>()
-                .Where(a => a.UserName == userRegisterData.UserName || a.Email == userRegisterData.Email);
+        //public bool CheckExistAccount(Register userRegisterData)
+        //{
+        //    var query = _context.Set<User>()
+        //        .Where(a => a.UserName == userRegisterData.UserName || a.Email == userRegisterData.Email);
 
-            if (query.Any(a => userRegisterData.UserName.Contains(a.UserName) || userRegisterData.Email.Contains(a.Email)))
-                return true;
+        //    if (query.Any(a => userRegisterData.UserName.Contains(a.UserName) || userRegisterData.Email.Contains(a.Email)))
+        //        return true;
 
-            return false;
-        }
+        //    return false;
+        //}
 
-        public bool ValidateData(Login userLoginData)
-        {
-            var query = _context.Set<User>()
-                .Select(a => a.UserName)
-                .ToList();
+        //public bool ValidateData(Login userLoginData)
+        //{
+        //    var query = _context.Set<User>()
+        //        .Select(a => a.UserName)
+        //        .ToList();
 
-            if (query.Contains(userLoginData.UserName))
-                return true;
+        //    if (query.Contains(userLoginData.UserName))
+        //        return true;
 
-            return false;
+        //    return false;
                 
-        }
+        //}
 
-        public User GetUser(Login login)
-        {
-            var result = _context.Set<User>()
-                .FirstOrDefault(a => a.UserName == login.UserName);
+        //public User GetUser(Login login)
+        //{
+        //    var result = _context.Set<User>()
+        //        .FirstOrDefault(a => a.UserName == login.UserName);
        
-            return result;
-        }
+        //    return result;
+        //}
     }
 }

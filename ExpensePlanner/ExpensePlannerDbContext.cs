@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace ExpensePlanner
 {
-    public class ExpensePlannerDbContext : IdentityDbContext<User>
+    public class ExpensePlannerDbContext : DbContext
     {
         public ExpensePlannerDbContext(DbContextOptions<ExpensePlannerDbContext> options) : base(options)
         {
@@ -19,14 +19,13 @@ namespace ExpensePlanner
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<User>()
                 .HasMany(a => a.Expenses)
                 .WithOne(a => a.User);
 
             modelBuilder.Entity<User>()
-                .HasMany(a => a.Roles)
+                .HasOne(a => a.Role)
                 .WithMany(a => a.Users);
         }
     }

@@ -10,17 +10,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ExpensePlannerDbContext>(a => a.UseSqlServer(builder.Configuration.GetConnectionString("ExpensePlannerConnectionString")));
-builder.Services.AddIdentity<User, IdentityRole>(options =>
-{
-    options.Password.RequireDigit = false;
-    options.Password.RequiredLength = 6;
-    options.Password.RequireNonAlphanumeric = false;
-    options.Password.RequireUppercase = false;
-    options.Password.RequireLowercase = false;
-}).AddEntityFrameworkStores<ExpensePlannerDbContext>();
-
 builder.Services.AddScoped<IExpenseService, ExpenseService>();
-builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+
 
 var app = builder.Build();
 
