@@ -1,0 +1,21 @@
+﻿@model ExpensePlanner.Models.Dtos.LoginDto
+
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Login</h1>
+
+
+@using (Html.BeginForm("Login", "Account1", FormMethod.Post))
+{
+	@Html.ValidationSummary()
+
+
+		<span>Login: </span> @Html.TextBoxFor(a => a.Login)
+		<span>Password: </span> @Html.PasswordFor(a => a.Password)
+
+
+		<button type="submit">Login</button>
+}

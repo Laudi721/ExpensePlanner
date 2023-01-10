@@ -18,7 +18,7 @@ namespace ExpensePlanner.Services
         public IEnumerable<Expense> Get()
         {
             var result = _context.Set<Expense>()
-                //.Include(a => a.User)
+                .Include(a => a.User)
                 .Where(a => !a.IsCompleted && !a.IsDeleted)
                 .ToList();
 

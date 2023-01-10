@@ -61,7 +61,7 @@ namespace ExpensePlanner
                 RoleId = 1,
             };
 
-            _passwordHasher.HashPassword(user, user.Password);
+            user.Password = _passwordHasher.HashPassword(user, user.Password);
 
             return user;
         }

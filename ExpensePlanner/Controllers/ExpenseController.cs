@@ -1,5 +1,6 @@
 ﻿using ExpensePlanner.Models;
 using ExpensePlanner.Models.Dtos;
+using ExpensePlanner.Services;
 using ExpensePlanner.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -9,6 +10,8 @@ namespace ExpensePlanner.Controllers
     public class ExpenseController : Controller
     {
         private readonly IExpenseService _expenseService;
+        private readonly IAccountService _accountService;
+        private readonly UserDto _userDto;
 
         public ExpenseController(IExpenseService expenseService)
         {
@@ -35,7 +38,9 @@ namespace ExpensePlanner.Controllers
                 return View(expense);
             }
 
-            _expenseService.Post(expense);
+			var userId = _accountService.GetUserId();
+
+			_expenseService.Post(expense);
 
             return RedirectToAction("Get");
         }
