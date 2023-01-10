@@ -31,6 +31,15 @@ namespace ExpensePlanner.Controllers
 			if (!ModelState.IsValid)
 				return View(userLoginData);
 
+            var user = GetUser(userLoginData);
+
+            if (!ValidateData(userLoginData) || !await _userManager.CheckPasswordAsync(user, userLoginData.Password))
+            {
+
+                ModelState.AddModelError(nameof(userLoginData.UserName), "Incorrect login or password");
+                return View(userLoginData);
+            }
+
             await _signInManager.PasswordSignInAsync(userLoginData.UserName, userLoginData.Password, true, false);
 
             AccountService.LoginHistory(userLoginData.UserName);
@@ -52,7 +61,7 @@ namespace ExpensePlanner.Controllers
 
             if (CheckExistAccount(userRegisterData))
             {
-                ModelState.AddModelError(nameof(userRegisterData.UserName), "Account with this username already exists");
+                ModelState.AddModelError(nameof(userRegisterData.UserName), "Account with this username or email already exists");
                 return View(userRegisterData);
             }
 
@@ -74,9 +83,19 @@ namespace ExpensePlanner.Controllers
             return RedirectToAction("Login");
         }
 
-        public bool CheckExistAccount(Register userRegisterData)
-        {
-            return _accountService.CheckExistAccount(userRegisterData);
-        }
+        public bool CheckExistAccount(Register userRegisterData) => _accountService.CheckExistAccount(userRegisterData);
+        //{
+        //    return _accountService.CheckExistAccount(userRegisterData);
+        //}
+
+        public bool ValidateData(Login userLoginData) => _accountService.ValidateData(userLoginData);
+        
+
+        public User GetUser(Login login) => _accountService.GetUser(login);
+        //{
+        //    var user = _accountService.User(login);
+
+        //    return user;
+        //}
     }
 }

@@ -25,9 +25,9 @@ namespace ExpensePlanner.Models
         [Column(TypeName="datetime2")]
         public DateTime? RealizedDate { get; set; }
 
-        //public User User{ get; set; }
+        public User User { get; set; }
 
-        //public int UserId { get; set; }
+        public int UserId { get; set; }
 
         public bool IsDeleted { get; set; }
 

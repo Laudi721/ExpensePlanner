@@ -49,5 +49,30 @@ namespace ExpensePlanner.Services
 
             return false;
         }
+
+        public bool ValidateData(Login userLoginData)
+        {
+            var query = _context.Set<User>()
+                .Select(a => a.UserName)
+                .ToList();
+
+            if (query.Contains(userLoginData.UserName))
+                return true;
+
+            return false;
+                
+        }
+
+        public User GetUser(Login login)
+        {
+            //var result = new User();
+
+            var result = _context.Set<User>()
+                .FirstOrDefault(a => a.UserName == login.UserName);
+
+            //result = query;
+
+            return result;
+        }
     }
 }

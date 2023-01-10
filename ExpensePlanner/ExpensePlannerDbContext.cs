@@ -11,7 +11,7 @@ namespace ExpensePlanner
         {
         }
 
-        //public DbSet<User> Users { get; set; }
+        public DbSet<User> Users { get; set; }
 
         public DbSet<Role> Roles { get; set; }
 
@@ -20,6 +20,14 @@ namespace ExpensePlanner
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<User>()
+                .HasMany(a => a.Expenses)
+                .WithOne(a => a.User);
+
+            modelBuilder.Entity<User>()
+                .HasMany(a => a.Roles)
+                .WithMany(a => a.Users);
         }
     }
 }

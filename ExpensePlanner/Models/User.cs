@@ -5,11 +5,11 @@ namespace ExpensePlanner.Models
 {
     public class User : IdentityUser
     {
-        //public User()
-        //{
-        //    //Expenses = new List<Expense>();
-        //    //Roles = new List<Role>();
-        //}
+        public User()
+        {
+            Expenses = new List<Expense>();
+            Roles = new List<Role>();
+        }
 
         //public int Id { get; set; }
 
@@ -17,8 +17,8 @@ namespace ExpensePlanner.Models
 
         //public string PasswordHash { get; set; }
 
-        //public virtual List<Expense> Expenses { get; set; }
+        public virtual List<Expense> Expenses { get; set; }
 
-        //public virtual List<Role> Roles { get; set; }
+        public virtual List<Role> Roles { get; set; }
     }
 }
