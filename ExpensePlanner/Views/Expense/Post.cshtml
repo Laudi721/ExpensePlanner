@@ -1,0 +1,25 @@
+﻿@using ExpensePlanner.Models.Enums
+@model ExpensePlanner.Models.Dtos.ExpenseDto
+
+@{
+    ViewData["Title"] = "Post";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Create new expense</h1>
+
+@using(@Html.BeginForm("Post", "Expense", FormMethod.Post))
+{
+    @*@Html.ValidationSummary()*@
+
+    <span>Name: </span>@Html.TextBoxFor(a => a.Name);
+    <span>Amount: </span>@Html.TextBoxFor(a => a.Amount);
+    <span>Expense type: </span><select asp-for="ExpenseType" asp-items="Html.GetEnumSelectList<ExpenseType>()" ></select> 
+    <span>Descrption: </span>@Html.TextBoxFor(a => a.Description);
+
+    <button type="submit">Create</button>
+}
+
+<div>
+    <a asp-action="Get">Back</a>
+</div>
