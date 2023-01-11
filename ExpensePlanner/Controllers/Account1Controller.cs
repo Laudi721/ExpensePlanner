@@ -80,10 +80,10 @@ namespace ExpensePlanner.Controllers
 			return RedirectToAction("Login");
 		}
 
-		public async Task<IActionResult> DeleteUser(int id)
-		{
+		//public async Task<IActionResult> DeleteUser(int id)
+		//{
 
-		}
+		//}
 		public bool CheckExistAccount(RegisterUserDto dto) => _accountService.CheckExistAccount(dto);
 
         public User GetUser<T>(string login) => _accountService.GetUser<T>(login);

@@ -56,7 +56,8 @@
             <td>
                 @if(item.User.RoleId == 1)
                 {
-                     <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a asp-action="MarkAsDone" asp-route-id="@item.Id">MarkAsDone</a>                        
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                 }
                 else
                 {
