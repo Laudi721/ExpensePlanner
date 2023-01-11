@@ -3,10 +3,11 @@ using ExpensePlanner.Models.Dtos;
 using ExpensePlanner.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 
 namespace ExpensePlanner.Services
 {
-    public class AccountService : IAccountService
+    public class AccountService : StaticService, IAccountService, GenericInterface
     {
         private readonly ExpensePlannerDbContext _context;
         private readonly IPasswordHasher<User> _passwordHasher;
@@ -45,6 +46,7 @@ namespace ExpensePlanner.Services
 
         public void RegisterUser(RegisterUserDto dto)
         {
+
             var newUser = new User()
             {
                 Login = dto.Login,
@@ -58,6 +60,14 @@ namespace ExpensePlanner.Services
             _context.SaveChanges();
         }
 
+        public void LogoutAsync(int userId)
+        {
+            var query = _context.Set<User>()
+                .FirstOrDefault(a => a.Id == userId);
+
+            query.IsLogged = false;            
+        }
+
         public bool CheckExistAccount(RegisterUserDto dto)
         {
             var query = _context.Set<User>()
@@ -69,34 +79,42 @@ namespace ExpensePlanner.Services
             return false;
         }
 
-        public bool ValidateData(LoginDto dto)
+        public bool ValidateData(LoginDto dto, int userId)
         {
+
             var query = _context.Set<User>()
                 .FirstOrDefault(a => a.Login == dto.Login);
 
             var hashedPassword = _passwordHasher.VerifyHashedPassword(query, query.Password, dto.Password);
 
             if (query.Login == dto.Login && hashedPassword == PasswordVerificationResult.Success)
+            {
+                StaticService.userId = query.Id;
+                query.IsLogged = true;
                 return true;
+            }
 
             return false;
-
+             
         }
 
-		public int GetUserId()
+        public int GetUserId()
         {
-			var query = _context.Set<User>()
-				.FirstOrDefault(a => a.Login == "admin");
+            var query = _context.Set<User>()
+                .FirstOrDefault(a => a.Login == "admin");
 
             return query.Id;
-		}
+        }
 
-		//public User GetUser(LoginDto login)
-		//{
-		//    var user = _context.Set<User>()
-		//        .FirstOrDefault(a => a.Login == login.Login);
+        public User GetUser<T>(string login)
+        {
+            var user = _context.Set<User>()
+                .FirstOrDefault(a => a.Login == login);
 
-		//    return user;
-		//}
-	}
+            if (user == null)
+                return null;
+
+            return user;
+        }
+    }
 }

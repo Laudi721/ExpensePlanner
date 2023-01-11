@@ -39,6 +39,8 @@ namespace ExpensePlanner.Controllers
                 return View(userLoginData);
             }
 
+            TempData["IsLogged"] = user.IsLogged;
+
             await _signInManager.PasswordSignInAsync(userLoginData.UserName, userLoginData.Password, true, false);
 
             AccountService.LoginHistory(userLoginData.UserName);

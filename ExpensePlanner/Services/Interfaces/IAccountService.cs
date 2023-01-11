@@ -3,15 +3,15 @@ using ExpensePlanner.Models.Dtos;
 
 namespace ExpensePlanner.Services.Interfaces
 {
-    public interface IAccountService
+    public interface IAccountService : GenericInterface
     {
         public void RegisterUser(RegisterUserDto dto);
 		public bool CheckExistAccount(RegisterUserDto dto);
-		public bool ValidateData(LoginDto dto);
+		public bool ValidateData(LoginDto dto, int userId);
 
 		public int GetUserId();
-		//public User GetUser(LoginDto dto);
+		//public User GetUser<T>(string login);
 
-		//Task LogoutAsync();
+		public void LogoutAsync(int userId);
 	}
 }

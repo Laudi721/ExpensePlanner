@@ -5,9 +5,9 @@ namespace ExpensePlanner.Services.Interfaces
 {
     public interface IExpenseService
     {
-        public void Post(ExpenseDto expense);
+        public void Post(ExpenseDto expenseint, int userId);
 
-        public IEnumerable<Expense> Get();
+        public IEnumerable<Expense> Get(int userId);
 
         public IEnumerable<ExpenseDto> GetCompleted();
 

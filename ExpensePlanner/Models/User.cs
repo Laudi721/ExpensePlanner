@@ -21,5 +21,7 @@ namespace ExpensePlanner.Models
         public Role Role { get; set; }
 
         public int RoleId { get; set; }
+
+        public bool IsLogged { get; set; }
     }
 }

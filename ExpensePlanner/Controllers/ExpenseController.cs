@@ -10,8 +10,7 @@ namespace ExpensePlanner.Controllers
     public class ExpenseController : Controller
     {
         private readonly IExpenseService _expenseService;
-        private readonly IAccountService _accountService;
-        private readonly UserDto _userDto;
+        private readonly int userId = StaticService.userId;
 
         public ExpenseController(IExpenseService expenseService)
         {
@@ -26,7 +25,8 @@ namespace ExpensePlanner.Controllers
 
         public IActionResult Get()
         {
-            var result = _expenseService.Get();
+            TempData["IsLogged"] = true;
+            var result = _expenseService.Get(userId);
 
             return View(result);
         }
@@ -35,18 +35,18 @@ namespace ExpensePlanner.Controllers
         {
             if (!ModelState.IsValid)
             {
+                TempData["IsLogged"] = true;
                 return View(expense);
             }
 
-			var userId = _accountService.GetUserId();
-
-			_expenseService.Post(expense);
+			_expenseService.Post(expense, userId);
 
             return RedirectToAction("Get");
         }
 
         public IActionResult Delete(int id)
         {
+            TempData["IsLogged"] = true;
             _expenseService.Delete(id);
 
             return RedirectToAction("Get");
@@ -54,6 +54,7 @@ namespace ExpensePlanner.Controllers
 
         public IActionResult GetCompleted()
         {
+            TempData["IsLogged"] = true;
             var result = _expenseService.GetCompleted();
 
             return View(result);
@@ -62,6 +63,7 @@ namespace ExpensePlanner.Controllers
         [Route("/MarkAsDone/{id}")]
         public IActionResult MarkAsDone(int id)
         {
+            TempData["IsLogged"] = true;
             _expenseService.MarkAsDone(id);
 
             return RedirectToAction("Get");

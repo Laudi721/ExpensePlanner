@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace ExpensePlanner.Services
 {
-    public class ExpenseService : IExpenseService
+    public class ExpenseService : StaticService, IExpenseService, GenericInterface
     {
         private readonly ExpensePlannerDbContext _context;
 
@@ -15,21 +15,21 @@ namespace ExpensePlanner.Services
             _context = context;
         }
 
-        public IEnumerable<Expense> Get()
+        public IEnumerable<Expense> Get(int userId)
         {
             var result = _context.Set<Expense>()
                 .Include(a => a.User)
-                .Where(a => !a.IsCompleted && !a.IsDeleted)
+                .Where(a => a.UserId == userId && !a.IsCompleted && !a.IsDeleted)
                 .ToList();
 
             return result;
         }
 
-        public void Post(ExpenseDto expense)
+        public void Post(ExpenseDto expense, int userId)
         {
             var model = new Expense();
 
-            CustomGetMapping(model, expense);
+            CustomGetMapping(model, expense, userId);
             try
             {
                 _context.Set<Expense>().Add(model);
@@ -75,14 +75,14 @@ namespace ExpensePlanner.Services
             return result;
         }        
 
-        private void CustomGetMapping(Expense model, ExpenseDto dto)
+        private void CustomGetMapping(Expense model, ExpenseDto dto, int userId)
         {
             model.Name = dto.Name;
             model.Description = dto.Description;
             model.Amount = dto.Amount;
             model.ExpenseType = dto.ExpenseType;
             model.CreateDate = DateTime.Now;
-            //model.UserId = 17;
+            model.UserId = userId;
         }
 
         public bool MarkAsDone(int id)
@@ -130,6 +130,17 @@ namespace ExpensePlanner.Services
             }
 
             return true;
+        }
+
+        public User GetUser<T>(string login)
+        {
+            var user = _context.Set<User>()
+                .FirstOrDefault(a => a.Login == login);
+
+            if (user == null)
+                return null;
+
+            return user;
         }
     }
 }
