@@ -1,16 +1,21 @@
 ﻿using ExpensePlanner.Models;
+using ExpensePlanner.Models.Dtos;
 using ExpensePlanner.Services.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 
 namespace ExpensePlanner.Services
 {
-    public class AccountService : IAccountService
+    public class AccountService : StaticService, IAccountService, GenericInterface
     {
         private readonly ExpensePlannerDbContext _context;
+        private readonly IPasswordHasher<User> _passwordHasher;
 
-        public AccountService(ExpensePlannerDbContext context)
+        public AccountService(ExpensePlannerDbContext context, IPasswordHasher<User> passwordHasher)
         {
             _context = context;
+            _passwordHasher = passwordHasher;
         }
 
         public static void LoginHistory(string userName)
@@ -39,36 +44,77 @@ namespace ExpensePlanner.Services
             }
         }
 
-        public bool CheckExistAccount(Register userRegisterData)
+        public void RegisterUser(RegisterUserDto dto)
+        {
+
+            var newUser = new User()
+            {
+                Login = dto.Login,
+                Password = dto.Password,
+                RoleId = dto.RoleId,
+            };
+
+            newUser.Password = _passwordHasher.HashPassword(newUser, newUser.Password);
+
+            _context.Users.Add(newUser);
+            _context.SaveChanges();
+        }
+
+        public void LogoutAsync(int userId)
         {
             var query = _context.Set<User>()
-                .Where(a => a.UserName == userRegisterData.UserName || a.Email == userRegisterData.Email);
+                .FirstOrDefault(a => a.Id == userId);
 
-            if (query.Any(a => userRegisterData.UserName.Contains(a.UserName) || userRegisterData.Email.Contains(a.Email)))
+            query.IsLogged = false;            
+        }
+
+        public bool CheckExistAccount(RegisterUserDto dto)
+        {
+            var query = _context.Set<User>()
+                .Where(a => a.Login == dto.Login);
+
+            if (query.Any(a => a.Login.Contains(dto.Login)))
                 return true;
 
             return false;
         }
 
-        public bool ValidateData(Login userLoginData)
+        public bool ValidateData(LoginDto dto, int userId)
         {
-            var query = _context.Set<User>()
-                .Select(a => a.UserName)
-                .ToList();
 
-            if (query.Contains(userLoginData.UserName))
+            var query = _context.Set<User>()
+                .FirstOrDefault(a => a.Login == dto.Login);
+
+            var hashedPassword = _passwordHasher.VerifyHashedPassword(query, query.Password, dto.Password);
+
+            if (query.Login == dto.Login && hashedPassword == PasswordVerificationResult.Success)
+            {
+                StaticService.userId = query.Id;
+                query.IsLogged = true;
                 return true;
+            }
 
             return false;
-                
+             
         }
 
-        public User GetUser(Login login)
+        public int GetUserId()
         {
-            var result = _context.Set<User>()
-                .FirstOrDefault(a => a.UserName == login.UserName);
-       
-            return result;
+            var query = _context.Set<User>()
+                .FirstOrDefault(a => a.Login == "admin");
+
+            return query.Id;
+        }
+
+        public User GetUser<T>(string login)
+        {
+            var user = _context.Set<User>()
+                .FirstOrDefault(a => a.Login == login);
+
+            if (user == null)
+                return null;
+
+            return user;
         }
     }
 }

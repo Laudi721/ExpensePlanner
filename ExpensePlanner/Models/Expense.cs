@@ -33,7 +33,5 @@ namespace ExpensePlanner.Models
 
         [Column(TypeName="datetime2")]
         public DateTime? DeletedTime { get; set; }
-
-
     }
 }

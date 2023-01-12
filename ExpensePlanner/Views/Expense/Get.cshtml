@@ -54,8 +54,15 @@
                 @Html.DisplayFor(modelItem => item.CreateDate)
             </td>
             <td>
-                <a asp-action="MarkAsDone" asp-route-id="@item.Id">MarkAsDone</a>                
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                @if(item.User.RoleId == 1)
+                {
+                    <a asp-action="MarkAsDone" asp-route-id="@item.Id">MarkAsDone</a>                        
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                }
+                else
+                {
+                    <a asp-action="MarkAsDone" asp-route-id="@item.Id">MarkAsDone</a>                        
+                }
             </td>
         </tr>
     }
