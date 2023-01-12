@@ -8,6 +8,8 @@ namespace ExpensePlanner.Models.Dtos
 
         public string Password { get; set; }
 
+        public string ConfirmPassword { get; set; }
+
         public int RoleId { get; set; } = 2;
     }
 }

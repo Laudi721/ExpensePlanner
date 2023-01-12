@@ -44,19 +44,34 @@ namespace ExpensePlanner.Services
             }
         }
 
-        public void RegisterUser(RegisterUserDto dto)
+        public bool RegisterUser(RegisterUserDto dto)
         { 
-            var newUser = new User()
+            if (dto.Password == dto.ConfirmPassword)
             {
-                Login = dto.Login,
-                Password = dto.Password,
-                RoleId = dto.RoleId,
-            };
+                var newUser = new User()
+                {
+                    Login = dto.Login,
+                    Password = dto.Password,
+                    RoleId = dto.RoleId,
+                };
 
-            newUser.Password = _passwordHasher.HashPassword(newUser, newUser.Password);
+                newUser.Password = _passwordHasher.HashPassword(newUser, newUser.Password);
 
-            _context.Users.Add(newUser);
-            _context.SaveChanges();
+                try
+                {
+                    _context.Users.Add(newUser);
+                    _context.SaveChanges();
+                }
+                catch (Exception e)
+                {
+
+                    throw new Exception("Error", e);
+                }
+
+                return true;
+            }
+
+            return false;
         }
 
         public void LogoutAsync(int userId)
