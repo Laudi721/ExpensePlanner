@@ -3,13 +3,13 @@ using ExpensePlanner.Models;
 
 namespace ExpensePlanner.Services.Interfaces
 {
-    public interface IExpenseService
+    public interface IExpenseService : IGenericService
     {
         public void Post(ExpenseDto expenseint, int userId);
 
         public IEnumerable<Expense> Get(int userId);
 
-        public IEnumerable<ExpenseDto> GetCompleted();
+        public IQueryable<ExpenseDto> GetCompleted(int userId);
 
         public bool MarkAsDone(int id);
 

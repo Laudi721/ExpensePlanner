@@ -25,7 +25,9 @@ namespace ExpensePlanner.Controllers
 
         public IActionResult Get()
         {
+            TempData["IsAdmin"] = _expenseService.IsAdmin(userId);
             TempData["IsLogged"] = true;
+
             var result = _expenseService.Get(userId);
 
             return View(result);
@@ -33,6 +35,8 @@ namespace ExpensePlanner.Controllers
 
         public IActionResult Post(ExpenseDto expense)
         {
+            TempData["IsAdmin"] = _expenseService.IsAdmin(userId);
+
             if (!ModelState.IsValid)
             {
                 TempData["IsLogged"] = true;
@@ -45,8 +49,9 @@ namespace ExpensePlanner.Controllers
         }
 
         public IActionResult Delete(int id)
-        {
+        {            
             TempData["IsLogged"] = true;
+
             _expenseService.Delete(id);
 
             return RedirectToAction("Get");
@@ -54,22 +59,23 @@ namespace ExpensePlanner.Controllers
 
         public IActionResult GetCompleted()
         {
+            TempData["IsAdmin"] = _expenseService.IsAdmin(userId);
             TempData["IsLogged"] = true;
-            var result = _expenseService.GetCompleted();
+
+            var result = _expenseService.GetCompleted(userId);
 
             return View(result);
         }
 
         [Route("/MarkAsDone/{id}")]
         public IActionResult MarkAsDone(int id)
-        {
+        {            
             TempData["IsLogged"] = true;
+
             _expenseService.MarkAsDone(id);
 
             return RedirectToAction("Get");
         }
 
-        //[HttpGet]
-        //public async Task<IActionResult>  
     }
 }

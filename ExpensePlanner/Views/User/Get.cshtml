@@ -1,0 +1,41 @@
+﻿@model IEnumerable<ExpensePlanner.Models.Dtos.UserDto>
+
+@{
+    ViewData["Title"] = "Get";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Get all users</h1>
+
+<p>
+    <a asp-controller="Expense" asp-action="Get">Back</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Login)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RoleName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Login)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RoleName)
+            </td>
+            <td>
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a asp-action="GetUserExpenses" asp-route-id="@item.Id">Show user expense</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -4,6 +4,7 @@ using ExpensePlanner;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ExpensePlanner.Migrations
 {
     [DbContext(typeof(ExpensePlannerDbContext))]
-    partial class ExpensePlannerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230112141121_AddDeletedPropertiesToUser")]
+    partial class AddDeletedPropertiesToUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

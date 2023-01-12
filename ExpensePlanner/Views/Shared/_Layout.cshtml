@@ -28,6 +28,12 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Expense" asp-action="Get">Expense</a>
                             </li>
 
+                            @if ((bool)TempData["IsAdmin"])
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Get">Users</a>
+                                </li>
+                            }
                         }
                          else
                         {
