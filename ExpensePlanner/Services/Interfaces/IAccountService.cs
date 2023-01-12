@@ -5,7 +5,7 @@ namespace ExpensePlanner.Services.Interfaces
 {
     public interface IAccountService : IGenericService
     {
-        public void RegisterUser(RegisterUserDto dto);
+        public bool RegisterUser(RegisterUserDto dto);
 
 		public bool CheckExistAccount(RegisterUserDto dto);
 

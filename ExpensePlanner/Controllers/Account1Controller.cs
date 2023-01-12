@@ -38,7 +38,11 @@ namespace ExpensePlanner.Controllers
 			if (user == null)
 				TempData["IsLogged"] = (bool)false;
 
-            _accountService.RegisterUser(dto);
+            if (!_accountService.RegisterUser(dto))
+            {
+                ModelState.AddModelError(nameof(dto.Login), "the passwords do not match. Try again");
+                return View(dto);
+            }
 
             return RedirectToAction("Login");
         }

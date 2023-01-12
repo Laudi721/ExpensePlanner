@@ -14,19 +14,30 @@ namespace ExpensePlanner.Services
             _context = context;
         }
 
+        public void CustomDeleteData(User user)
+        {
+            user.IsDeleted = true;
+            user.DeletedTime= DateTime.Now;
+
+            foreach(var item in user.Expenses)
+            {
+                item.IsDeleted = true;
+                item.DeletedTime = DateTime.Now;
+            }
+        }
+
         public bool DeleteUser(int userId)
         {
             var user = _context.Set<User>()
+                .Include(a => a.Expenses)
                 .FirstOrDefault(a => a.Id == userId);
 
             if (user != null)
             {
                 try
                 {
-                    user.IsDeleted = true;
-                    user.DeletedTime = DateTime.Now;
+                    CustomDeleteData(user);
 
-                    _context.Set<User>().Remove(user);
                     _context.SaveChanges();
                 }
                 catch (Exception e)
@@ -45,6 +56,7 @@ namespace ExpensePlanner.Services
             var query = _context.Set<User>()
                 .Include(a => a.Expenses)
                 .Include(a => a.Role)
+                .Where(a => !a.IsDeleted)
                 .ToList();
 
             var data = query.Select(a => new
