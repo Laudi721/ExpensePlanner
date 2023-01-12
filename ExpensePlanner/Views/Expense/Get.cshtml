@@ -11,15 +11,7 @@
     <a asp-action="Post">Create new expense</a>
     <a asp-action="GetCompleted">Show all completed</a>
 </p>
-@if(Model.Where(a => a.UserId == 1).Any())
-{
-    <th>
-        <p>
-            <a asp-controller="User" asp-action="Get">Show all users</a>
-        </p>
 
-    </th>    
-}
 <table class="table">
     <thead>
         <tr>
