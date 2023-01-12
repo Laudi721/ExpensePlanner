@@ -28,6 +28,12 @@ namespace ExpensePlanner.Controllers
                 return View();
 			}
 
+            if (CheckExistAccount(dto))
+            {
+                ModelState.AddModelError(nameof(dto.Login), "Account with this login already exist");
+                return View(dto);
+            }
+
             var user = GetUser<RegisterUserDto>(dto.Login);
 			if (user == null)
 				TempData["IsLogged"] = (bool)false;
@@ -58,7 +64,9 @@ namespace ExpensePlanner.Controllers
                 TempData["IsLogged"] = (bool)false;
                 return View(dto);
 			}
+            TempData["IsAdmin"] = _accountService.IsAdmin(user.Id);
 
+            AccountService.LoginHistory(dto.Login);
 
             TempData["IsLogged"] = user.IsLogged;
 
@@ -80,10 +88,6 @@ namespace ExpensePlanner.Controllers
 			return RedirectToAction("Login");
 		}
 
-		//public async Task<IActionResult> DeleteUser(int id)
-		//{
-
-		//}
 		public bool CheckExistAccount(RegisterUserDto dto) => _accountService.CheckExistAccount(dto);
 
         public User GetUser<T>(string login) => _accountService.GetUser<T>(login);

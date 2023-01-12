@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ExpensePlanner.Models
 {
@@ -23,5 +26,10 @@ namespace ExpensePlanner.Models
         public int RoleId { get; set; }
 
         public bool IsLogged { get; set; }
+
+        public bool IsDeleted { get; set; }
+
+        [Column(TypeName = "datetime2")]
+        public DateTime? DeletedTime { get; set; }
     }
 }

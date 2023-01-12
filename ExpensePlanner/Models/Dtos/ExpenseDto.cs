@@ -18,12 +18,16 @@ namespace ExpensePlanner.Models.Dtos
         [MaxLength(50)]
         public string Description { get; set; }
 
-        public bool IsCompleted { get; set; }
-
         [Column(TypeName = "datetime2")]
         public DateTime CreateDate { get; set; }
 
+        public bool IsCompleted { get; set; }
+
         [Column(TypeName = "datetime2")]
         public DateTime? RealizedDate { get; set; }
+
+        public bool IsDeleted { get; set; }
+
+        public DateTime? DeletedTime { get; set; }
     }
 }

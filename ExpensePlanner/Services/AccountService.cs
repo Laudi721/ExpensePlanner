@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Query.Internal;
 
 namespace ExpensePlanner.Services
 {
-    public class AccountService : StaticService, IAccountService, GenericInterface
+    public class AccountService : StaticService, IAccountService
     {
         private readonly ExpensePlannerDbContext _context;
         private readonly IPasswordHasher<User> _passwordHasher;
@@ -45,8 +45,7 @@ namespace ExpensePlanner.Services
         }
 
         public void RegisterUser(RegisterUserDto dto)
-        {
-
+        { 
             var newUser = new User()
             {
                 Login = dto.Login,
@@ -81,21 +80,27 @@ namespace ExpensePlanner.Services
 
         public bool ValidateData(LoginDto dto, int userId)
         {
-
             var query = _context.Set<User>()
-                .FirstOrDefault(a => a.Login == dto.Login);
+                .FirstOrDefault(a => a.Login == dto.Login && !a.IsDeleted);
 
-            var hashedPassword = _passwordHasher.VerifyHashedPassword(query, query.Password, dto.Password);
-
-            if (query.Login == dto.Login && hashedPassword == PasswordVerificationResult.Success)
+            if (query != null)
             {
-                StaticService.userId = query.Id;
-                query.IsLogged = true;
-                return true;
-            }
+                var hashedPassword = _passwordHasher.VerifyHashedPassword(query, query.Password, dto.Password);
 
-            return false;
-             
+                if (query.Login == dto.Login && hashedPassword == PasswordVerificationResult.Success)
+                {
+                    StaticService.userId = query.Id;
+                    query.IsLogged = true;
+                    return true;
+                }
+            }
+            else
+            {
+                return false;
+            }
+            
+
+            return false;             
         }
 
         public int GetUserId()
@@ -115,6 +120,19 @@ namespace ExpensePlanner.Services
                 return null;
 
             return user;
+        }
+
+        public bool IsAdmin(int userId)
+        {
+            var query = _context.Set<User>()
+                .FirstOrDefault(a => a.Id == userId);
+
+            if (query.RoleId == 1)
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }

@@ -1,12 +1,13 @@
 ﻿using ExpensePlanner.Models;
 using ExpensePlanner.Models.Dtos;
 using ExpensePlanner.Services.Interfaces;
+using MessagePack;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace ExpensePlanner.Services
 {
-    public class ExpenseService : StaticService, IExpenseService, GenericInterface
+    public class ExpenseService : StaticService, IExpenseService
     {
         private readonly ExpensePlannerDbContext _context;
 
@@ -42,11 +43,11 @@ namespace ExpensePlanner.Services
             }
         }
 
-        public IEnumerable<ExpenseDto> GetCompleted()
+        public IQueryable<ExpenseDto> GetCompleted(int userId)
         {
             var query = _context.Set<Expense>()
-                //.Include(a => a.User)
-                .Where(a => a.IsCompleted);
+                .Include(a => a.User)
+                .Where(a => a.IsCompleted && a.UserId == userId);
 
             var data = query.Select(a => new
             {
@@ -72,7 +73,7 @@ namespace ExpensePlanner.Services
                 RealizedDate = a.RealizedDate,
             });
 
-            return result;
+            return result.AsQueryable();
         }        
 
         private void CustomGetMapping(Expense model, ExpenseDto dto, int userId)
@@ -141,6 +142,19 @@ namespace ExpensePlanner.Services
                 return null;
 
             return user;
+        }
+
+        public bool IsAdmin(int userId)
+        {
+            var query = _context.Set<User>()
+                .FirstOrDefault(a => a.Id == userId);
+
+            if (query.RoleId == 1)
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }

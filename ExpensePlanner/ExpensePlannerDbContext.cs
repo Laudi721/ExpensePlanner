@@ -28,5 +28,7 @@ namespace ExpensePlanner
                 .HasOne(a => a.Role)
                 .WithMany(a => a.Users);
         }
+
+        public DbSet<ExpensePlanner.Models.Dtos.ExpenseDto> ExpenseDto { get; set; }
     }
 }

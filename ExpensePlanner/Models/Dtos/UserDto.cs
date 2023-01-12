@@ -4,6 +4,10 @@
 	{
 		public int Id { get; set; }
 
-		public string login { get; set; }
+		public string Login { get; set; }
+
+		public string RoleName { get; set; }
+
+		public List<ExpenseDto> UserExpsenses { get; set; }
 	}
 }

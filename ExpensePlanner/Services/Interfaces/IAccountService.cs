@@ -3,7 +3,7 @@ using ExpensePlanner.Models.Dtos;
 
 namespace ExpensePlanner.Services.Interfaces
 {
-    public interface IAccountService : GenericInterface
+    public interface IAccountService : IGenericService
     {
         public void RegisterUser(RegisterUserDto dto);
 

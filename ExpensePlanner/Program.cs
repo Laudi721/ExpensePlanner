@@ -19,6 +19,7 @@ builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 builder.Services.AddScoped<ExpensePlannerSeeder>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IValidator<RegisterUserDto>, RegisterUserDtoValidator>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 
 var app = builder.Build();
