@@ -1,7 +1,5 @@
 ﻿using ExpensePlanner.Models;
 using Microsoft.EntityFrameworkCore;
-using ExpensePlanner.Models.Dtos;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace ExpensePlanner
 {
@@ -28,7 +26,5 @@ namespace ExpensePlanner
                 .HasOne(a => a.Role)
                 .WithMany(a => a.Users);
         }
-
-        public DbSet<ExpensePlanner.Models.Dtos.ExpenseDto> ExpenseDto { get; set; }
     }
 }

@@ -2,8 +2,6 @@
 using ExpensePlanner.Models.Dtos;
 using ExpensePlanner.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query.Internal;
 
 namespace ExpensePlanner.Services
 {
@@ -79,7 +77,8 @@ namespace ExpensePlanner.Services
             var query = _context.Set<User>()
                 .FirstOrDefault(a => a.Id == userId);
 
-            query.IsLogged = false;            
+            query.IsLogged = false;
+            _context.SaveChanges();
         }
 
         public bool CheckExistAccount(RegisterUserDto dto)
@@ -106,6 +105,8 @@ namespace ExpensePlanner.Services
                 {
                     StaticService.userId = query.Id;
                     query.IsLogged = true;
+                    _context.SaveChanges();
+
                     return true;
                 }
             }

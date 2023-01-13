@@ -39,6 +39,7 @@ namespace ExpensePlanner.Controllers
 
             if (!ModelState.IsValid)
             {
+                ModelState.AddModelError(nameof(expense.Amount), "Wrong data type in Amount");
                 TempData["IsLogged"] = true;
                 return View(expense);
             }

@@ -8,13 +8,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ExpensePlanner.Controllers
 {
-    public class Account1Controller : Controller
+    public class AccountController : Controller
     {
         private readonly IAccountService _accountService;
 		private readonly int userId = StaticService.userId;
 
 
-        public Account1Controller(IAccountService accountService) 
+        public AccountController(IAccountService accountService) 
 		{ 
             _accountService = accountService;
         }

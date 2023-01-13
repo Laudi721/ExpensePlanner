@@ -8,28 +8,21 @@
 
   <ItemGroup>
     <Compile Remove="Database\**" />
-    <Compile Remove="Views\Account\**" />
     <Compile Remove="Views\Home\**" />
     <Content Remove="Database\**" />
-    <Content Remove="Views\Account\**" />
     <Content Remove="Views\Home\**" />
     <EmbeddedResource Remove="Database\**" />
-    <EmbeddedResource Remove="Views\Account\**" />
     <EmbeddedResource Remove="Views\Home\**" />
     <None Remove="Database\**" />
-    <None Remove="Views\Account\**" />
     <None Remove="Views\Home\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Controllers\AccountController.cs" />
     <Compile Remove="Controllers\HomeController.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.2.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.12" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.12" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.12" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.12" />
