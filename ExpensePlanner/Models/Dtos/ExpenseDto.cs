@@ -29,7 +29,5 @@ namespace ExpensePlanner.Models.Dtos
         public bool IsDeleted { get; set; }
 
         public DateTime? DeletedTime { get; set; }
-
-        public UserDto Login { get; set; }
     }
 }

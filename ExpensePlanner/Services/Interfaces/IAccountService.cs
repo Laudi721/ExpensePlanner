@@ -11,8 +11,6 @@ namespace ExpensePlanner.Services.Interfaces
 
 		public bool ValidateData(LoginDto dto, int userId);
 
-		public int GetUserId();
-
 		public void LogoutAsync(int userId);
 	}
 }

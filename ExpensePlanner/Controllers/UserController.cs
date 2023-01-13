@@ -15,6 +15,11 @@ namespace ExpensePlanner.Controllers
             _userService = userService;
         }
 
+        /// <summary>
+        /// Akcja usuwająca użytkownika
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public IActionResult Delete(int id)
         {
             TempData["IsLogged"] = true;
@@ -27,6 +32,10 @@ namespace ExpensePlanner.Controllers
             return BadRequest();
         }
 
+        /// <summary>
+        /// Akcja wyświetlająca liste użytkowników
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> Get()
         {
@@ -38,6 +47,11 @@ namespace ExpensePlanner.Controllers
             return View(allUsers);
         }
 
+        /// <summary>
+        /// Akcja wyświetlająca obiekty(wydatki) innego użytkownika
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> GetUserExpenses(int Id)
         {
