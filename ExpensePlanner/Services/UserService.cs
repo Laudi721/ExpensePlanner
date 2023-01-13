@@ -65,7 +65,7 @@ namespace ExpensePlanner.Services
         /// Metoda zwracająca listę uzytkowników
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<UserDto> GetAllUser()
+        public IQueryable<UserDto> GetAllUser()
         {
             var query = _context.Set<User>()
                 .Include(a => a.Expenses)
@@ -86,7 +86,7 @@ namespace ExpensePlanner.Services
                 Id= a.Id,
                 Login = a.Login,
                 RoleName = a.RoleName,                
-            }).ToList();
+            }).AsQueryable();
 
             return users;
         }

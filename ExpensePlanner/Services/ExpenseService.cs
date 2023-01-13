@@ -21,12 +21,12 @@ namespace ExpensePlanner.Services
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public IEnumerable<Expense> Get(int userId)
+        public IQueryable<Expense> Get(int userId)
         {
             var result = _context.Set<Expense>()
                 .Include(a => a.User)
                 .Where(a => a.UserId == userId && !a.IsCompleted && !a.IsDeleted)
-                .ToList();
+                .AsQueryable();
 
             return result;
         }
