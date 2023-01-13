@@ -2,8 +2,6 @@
 using ExpensePlanner.Models.Dtos;
 using ExpensePlanner.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query.Internal;
 
 namespace ExpensePlanner.Services
 {

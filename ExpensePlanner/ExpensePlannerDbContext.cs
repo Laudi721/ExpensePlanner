@@ -1,7 +1,5 @@
 ﻿using ExpensePlanner.Models;
 using Microsoft.EntityFrameworkCore;
-using ExpensePlanner.Models.Dtos;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace ExpensePlanner
 {
