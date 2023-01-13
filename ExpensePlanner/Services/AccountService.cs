@@ -15,7 +15,11 @@ namespace ExpensePlanner.Services
             _context = context;
             _passwordHasher = passwordHasher;
         }
-
+        
+        /// <summary>
+        /// Metoda zapisująca moment logowania do aplikacji
+        /// </summary>
+        /// <param name="userName"></param>
         public static void LoginHistory(string userName)
         {
             StreamWriter streamWriter;
@@ -42,6 +46,12 @@ namespace ExpensePlanner.Services
             }
         }
 
+        /// <summary>
+        /// Metoda rejestrująca użytkownika
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public bool RegisterUser(RegisterUserDto dto)
         { 
             if (dto.Password == dto.ConfirmPassword)
@@ -72,6 +82,10 @@ namespace ExpensePlanner.Services
             return false;
         }
 
+        /// <summary>
+        /// Metoda wylogowująca
+        /// </summary>
+        /// <param name="userId"></param>
         public void LogoutAsync(int userId)
         {
             var query = _context.Set<User>()
@@ -81,6 +95,11 @@ namespace ExpensePlanner.Services
             _context.SaveChanges();
         }
 
+        /// <summary>
+        /// Metoda sprawdzająca czy dany użytkownik istnieje w bazie
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
         public bool CheckExistAccount(RegisterUserDto dto)
         {
             var query = _context.Set<User>()
@@ -92,6 +111,12 @@ namespace ExpensePlanner.Services
             return false;
         }
 
+        /// <summary>
+        /// Metoda walidacji użytkownika
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         public bool ValidateData(LoginDto dto, int userId)
         {
             var query = _context.Set<User>()
@@ -119,14 +144,12 @@ namespace ExpensePlanner.Services
             return false;             
         }
 
-        public int GetUserId()
-        {
-            var query = _context.Set<User>()
-                .FirstOrDefault(a => a.Login == "admin");
-
-            return query.Id;
-        }
-
+        /// <summary>
+        /// Generyczna metoda zwracająca dane użytkownika
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="login"></param>
+        /// <returns></returns>
         public User GetUser<T>(string login)
         {
             var user = _context.Set<User>()
@@ -138,6 +161,11 @@ namespace ExpensePlanner.Services
             return user;
         }
 
+        /// <summary>
+        /// Metoda sprawdzająca czy użytkownik jest adminem
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         public bool IsAdmin(int userId)
         {
             var query = _context.Set<User>()

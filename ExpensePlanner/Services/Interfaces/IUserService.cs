@@ -6,7 +6,7 @@ namespace ExpensePlanner.Services.Interfaces
     {
         public bool DeleteUser(int userId);
 
-        public IEnumerable<UserDto> GetAllUser();
+        public IQueryable<UserDto> GetAllUser();
 
         public IQueryable<ExpenseDto> GetUserExpenses(int userId);
     }

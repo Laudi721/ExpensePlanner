@@ -19,6 +19,11 @@ namespace ExpensePlanner.Controllers
             _accountService = accountService;
         }
 
+        /// <summary>
+        /// Akcja rejestrujaca użytkownika
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult RegisterUser(RegisterUserDto dto)
         {
@@ -47,6 +52,10 @@ namespace ExpensePlanner.Controllers
             return RedirectToAction("Login");
         }
 
+        /// <summary>
+        /// Akcja zwracajaca pusty widok
+        /// </summary>
+        /// <returns></returns>
 		[HttpGet]
 		public IActionResult RegisterUser()
 		{
@@ -54,6 +63,11 @@ namespace ExpensePlanner.Controllers
             return View();
 		}
 
+        /// <summary>
+        /// Akcja logujaca użytkownika do aplikacji
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
 		[HttpPost]
 		public async Task<IActionResult> Login(LoginDto dto)
 		{
@@ -77,6 +91,10 @@ namespace ExpensePlanner.Controllers
 			return RedirectToAction("Get", "Expense");
 		}
 
+        /// <summary>
+        /// Akcja zwracajaca pusty widok
+        /// </summary>
+        /// <returns></returns>
 		[HttpGet]
 		public async Task<IActionResult> Login()
 		{
@@ -85,6 +103,10 @@ namespace ExpensePlanner.Controllers
             return View();
 		}
 
+        /// <summary>
+        /// Akcja wylogowujaca
+        /// </summary>
+        /// <returns></returns>
 		public async Task<IActionResult> Logout()
 		{
 			_accountService.LogoutAsync(userId);
@@ -92,8 +114,19 @@ namespace ExpensePlanner.Controllers
 			return RedirectToAction("Login");
 		}
 
+        /// <summary>
+        /// Metoda sprawdzająca czy uzytkownik o takim loginie istnieje w bazie
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
 		public bool CheckExistAccount(RegisterUserDto dto) => _accountService.CheckExistAccount(dto);
 
+        /// <summary>
+        /// Metoda zwracajaca dane uzytkownika
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="login"></param>
+        /// <returns></returns>
         public User GetUser<T>(string login) => _accountService.GetUser<T>(login);
     }
 }

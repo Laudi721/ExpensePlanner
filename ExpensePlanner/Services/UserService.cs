@@ -14,6 +14,10 @@ namespace ExpensePlanner.Services
             _context = context;
         }
 
+        /// <summary>
+        /// Metoda uzupełniająca do usunięcia użytkownika
+        /// </summary>
+        /// <param name="user"></param>
         public void CustomDeleteData(User user)
         {
             user.IsDeleted = true;
@@ -26,6 +30,12 @@ namespace ExpensePlanner.Services
             }
         }
 
+        /// <summary>
+        /// Metoda usuwająca użytkownika
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public bool DeleteUser(int userId)
         {
             var user = _context.Set<User>()
@@ -51,7 +61,11 @@ namespace ExpensePlanner.Services
             return false;
         }
 
-        public IEnumerable<UserDto> GetAllUser()
+        /// <summary>
+        /// Metoda zwracająca listę uzytkowników
+        /// </summary>
+        /// <returns></returns>
+        public IQueryable<UserDto> GetAllUser()
         {
             var query = _context.Set<User>()
                 .Include(a => a.Expenses)
@@ -72,11 +86,17 @@ namespace ExpensePlanner.Services
                 Id= a.Id,
                 Login = a.Login,
                 RoleName = a.RoleName,                
-            }).ToList();
+            }).AsQueryable();
 
             return users;
         }
 
+        /// <summary>
+        /// Metoda zwracająca dane użytkownika
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="login"></param>
+        /// <returns></returns>
         public User GetUser<T>(string login)
         {
             var user = _context.Set<User>()
@@ -88,6 +108,11 @@ namespace ExpensePlanner.Services
             return user;
         }
 
+        /// <summary>
+        /// Metoda zwracająca listę obiektów(wydatków) danego użytkownika
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         public IQueryable<ExpenseDto> GetUserExpenses(int userId)
         {
             var query = _context.Set<Expense>()
@@ -127,6 +152,11 @@ namespace ExpensePlanner.Services
             return expenses;
         }
 
+        /// <summary>
+        /// Metoda sprawdzająca czy użytkownik jest adminem
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         public bool IsAdmin(int userId)
         {
             var query = _context.Set<User>()

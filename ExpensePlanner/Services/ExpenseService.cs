@@ -16,16 +16,27 @@ namespace ExpensePlanner.Services
             _context = context;
         }
 
-        public IEnumerable<Expense> Get(int userId)
+        /// <summary>
+        /// Metoda zwracająca listę obiektów(wydatkow)
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public IQueryable<Expense> Get(int userId)
         {
             var result = _context.Set<Expense>()
                 .Include(a => a.User)
                 .Where(a => a.UserId == userId && !a.IsCompleted && !a.IsDeleted)
-                .ToList();
+                .AsQueryable();
 
             return result;
         }
 
+        /// <summary>
+        /// Metoda dodająca obiekt(wydatek) do bazy
+        /// </summary>
+        /// <param name="expense"></param>
+        /// <param name="userId"></param>
+        /// <exception cref="Exception"></exception>
         public void Post(ExpenseDto expense, int userId)
         {
             var model = new Expense();
@@ -43,6 +54,11 @@ namespace ExpensePlanner.Services
             }
         }
 
+        /// <summary>
+        /// Metoda zwracająca listę obiektów(wydatków) zrealizowanych
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         public IQueryable<ExpenseDto> GetCompleted(int userId)
         {
             var query = _context.Set<Expense>()
@@ -76,6 +92,12 @@ namespace ExpensePlanner.Services
             return result.AsQueryable();
         }        
 
+        /// <summary>
+        /// Metoda mapująca dto na model
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="dto"></param>
+        /// <param name="userId"></param>
         private void CustomGetMapping(Expense model, ExpenseDto dto, int userId)
         {
             model.Name = dto.Name;
@@ -86,6 +108,12 @@ namespace ExpensePlanner.Services
             model.UserId = userId;
         }
 
+        /// <summary>
+        /// Metoda oznaczająca obiekt(wydatek) jako zrealizowany
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public bool MarkAsDone(int id)
         {
             var model = _context.Set<Expense>()
@@ -113,6 +141,12 @@ namespace ExpensePlanner.Services
             return true;
         }
 
+        /// <summary>
+        /// Metoda usuwająca obiekt(wydatek) z bazy
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public bool Delete(int id)
         {
             var model = _context.Set<Expense>()
@@ -133,6 +167,12 @@ namespace ExpensePlanner.Services
             return true;
         }
 
+        /// <summary>
+        /// Metoda zwracająca dane użytkownika
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="login"></param>
+        /// <returns></returns>
         public User GetUser<T>(string login)
         {
             var user = _context.Set<User>()
@@ -144,6 +184,11 @@ namespace ExpensePlanner.Services
             return user;
         }
 
+        /// <summary>
+        /// Metoda sprawdzająca czy użytkownik jest adminem
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         public bool IsAdmin(int userId)
         {
             var query = _context.Set<User>()
