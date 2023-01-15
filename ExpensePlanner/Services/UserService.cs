@@ -40,9 +40,10 @@ namespace ExpensePlanner.Services
         {
             var user = _context.Set<User>()
                 .Include(a => a.Expenses)
+                .Include(a => a.Role)
                 .FirstOrDefault(a => a.Id == userId);
 
-            if (user != null)
+            if (user != null && !(user.Id == userId))
             {
                 try
                 {
