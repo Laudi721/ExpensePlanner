@@ -42,7 +42,7 @@ namespace ExpensePlanner.Services
                 .Include(a => a.Expenses)
                 .FirstOrDefault(a => a.Id == userId);
 
-            if (user != null)
+            if (user != null && !(user.RoleId == 1))
             {
                 try
                 {
